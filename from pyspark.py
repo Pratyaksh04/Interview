@@ -51,10 +51,6 @@ open_store = stores.filter((f.col("status")=="On") & (f.col("EmployeeCount")>10)
 
 sales.select("channelKey").distinct().show()
 
-sales = sales.withColumn(
-    "SalesCategory", 
-    f.when(f.col("SalesAmount")>1000,"High")
-    .when(f.col)
-    
-    )
 
+join_table = sales.join(stores, sales.StoreKey == stores.StoreKey, Inner)
+join_table.show(5)
