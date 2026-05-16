@@ -1,5 +1,5 @@
-from pyspark.sql import SparkSession
-from pyspark.sql import functions as f
+from pyspark.sql import SparkSession # type: ignore
+from pyspark.sql import functions as f # type: ignore
 
 spark = SparkSession.builder \
     .appName("ReadParquet") \
@@ -41,11 +41,20 @@ result = sales.join(channel, sales.channelKey == channel.Channel) \
 
 open_store = stores.filter((f.col("status")=="On") & (f.col("EmployeeCount")>10))
 
-sales.show(10)
+# sales.show(10)
 
 
-clean_sales = sales.fillna({"DiscountAmount":1000, "ReturnAmount":0})
+# clean_sales = sales.fillna({"DiscountAmount":1000, "ReturnAmount":0})
 
-clean_sales.filter(f.col("DiscountAmount").isNull()).show(10)
+# clean_sales.filter(f.col("DiscountAmount").isNull()).show(10)
 
+
+sales.select("channelKey").distinct().show()
+
+sales = sales.withColumn(
+    "SalesCategory", 
+    f.when(f.col("SalesAmount")>1000,"High")
+    .when(f.col)
+    
+    )
 
