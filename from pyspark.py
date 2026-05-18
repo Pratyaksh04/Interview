@@ -18,7 +18,7 @@ sales = spark.read.parquet(f"{base_path}\Sales.parquet")
 
 calendar = spark.read.parquet(f"{base_path}\Calendar.parquet")
 
-channel = spark.read.parquet(f"{base_path}\Channel.parquet")
+channel = spark.read.parquet(f"{base_path}\Channel.parquet").alias("ch")
 
 stores = spark.read.parquet(f"{base_path}\Stores.parquet")
 
@@ -51,10 +51,7 @@ open_store = stores.filter((f.col("status")=="On") & (f.col("EmployeeCount")>10)
 
 sales.select("channelKey").distinct().show()
 
-sales = sales.withColumn(
-    "SalesCategory", 
-    f.when(f.col("SalesAmount")>1000,"High")
-    .when(f.col)
-    
-    )
 
+join_table = sales.join(stores, sales.StoreKey == stores.StoreKey, "inner")
+channel.printSchema()
+join_table.select(f.col("ch.channel"), f.col("SalesKey")).show(5)
